@@ -1,5 +1,12 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"strconv"
+	"strings"
+)
+
 type Dial struct {
 	Ticks []DialTick
 }
@@ -11,29 +18,55 @@ type DialTick struct {
 }
 
 func main() {
-	dial := Dial{
-		Ticks: make([]DialTick, 100),
+	fmt.Println("Starting solution computation...")
+	solution := 0
+	currentTick := 49
+
+	scanner := bufio.NewScanner(strings.NewReader(input))
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
+		steps := 0
+
+		fmt.Println("Processing line:", line)
+		numberStr := line[1:]
+		number, err := strconv.Atoi(numberStr)
+		if err != nil {
+			panic(err)
+		}
+
+		switch line[0] {
+		case 'R':
+			steps = number
+		case 'L':
+			steps = -number
+		}
+
+		currentTick += steps
+
+		fmt.Println("Steps:", steps)
+		fmt.Println("Current tick before adjustment:", currentTick)
+		switch {
+		case currentTick == 0:
+			solution += 1
+		case currentTick < 0:
+			currentTick = 100 + (currentTick % 100)
+		case currentTick >= 100:
+			currentTick = currentTick % 100
+		}
+
+		fmt.Println("Current tick after adjustment:", currentTick)
 	}
 
-	for i := 0; i < 100; i++ {
-		dial.Ticks[i] = DialTick{
-			Val: i,
-		}
-
-		if i > 0 {
-			dial.Ticks[i].Prev = &dial.Ticks[i-1]
-		}
-
-		if i < 99 {
-			dial.Ticks[i-1].Next = &dial.Ticks[i]
-
-		}
-
-	}
+	fmt.Println("Solution:", solution)
 }
 
 var input = `
-2
+R2
 R6
 L19
 L50
