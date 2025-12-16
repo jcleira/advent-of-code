@@ -7,20 +7,10 @@ import (
 	"strings"
 )
 
-type Dial struct {
-	Ticks []DialTick
-}
-
-type DialTick struct {
-	Prev *DialTick
-	Val  int
-	Next *DialTick
-}
-
 func main() {
 	fmt.Println("Starting solution computation...")
 	solution := 0
-	currentTick := 49
+	currentTick := 50
 
 	scanner := bufio.NewScanner(strings.NewReader(input))
 
@@ -55,8 +45,14 @@ func main() {
 			solution += 1
 		case currentTick < 0:
 			currentTick = 100 + (currentTick % 100)
+			if currentTick == 0 {
+				solution += 1
+			}
 		case currentTick >= 100:
 			currentTick = currentTick % 100
+			if currentTick == 0 {
+				solution += 1
+			}
 		}
 
 		fmt.Println("Current tick after adjustment:", currentTick)
