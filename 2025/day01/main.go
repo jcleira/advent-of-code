@@ -44,7 +44,7 @@ func main() {
 		case currentTick == 0:
 			solution += 1
 		case currentTick < 0:
-			currentTick = 100 + (currentTick % 100)
+			currentTick = ((currentTick % 100) + 100) % 100
 			if currentTick == 0 {
 				solution += 1
 			}
